@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+body {
+	padding-top: 120px;
+	
+	/* Background */
+	background: #0b486b; /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #0b486b, #f56217); /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #0b486b, #f56217); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
