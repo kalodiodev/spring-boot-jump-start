@@ -1,6 +1,9 @@
 package eu.kalodiodev.springjumpstart.controller;
 
 import static org.hamcrest.Matchers.instanceOf;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -9,10 +12,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import eu.kalodiodev.springjumpstart.command.FeedbackForm;
+import eu.kalodiodev.springjumpstart.service.EmailService;
 
 /**
  * Contact Controller Test
@@ -22,12 +29,16 @@ import eu.kalodiodev.springjumpstart.command.FeedbackForm;
 public class ContactControllerTest {
 	
 	private MockMvc mockMvc;
+	
+	@Mock
+	private EmailService emailService;
 
+	@InjectMocks
     private ContactController contactController;
 
     @Before
     public void setup(){
-    	contactController = new ContactController();
+    	MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(contactController).build();
     }
 
@@ -51,7 +62,7 @@ public class ContactControllerTest {
     		.andExpect(status().isOk())
     		.andExpect(view().name("contact"));
     	
-    	// TODO: Verify feedback service interaction
+    	verify(emailService, times(1)).sendFeedback(feedback);
     }
     
     @Test
@@ -67,7 +78,7 @@ public class ContactControllerTest {
     		.andExpect(status().isOk())
     		.andExpect(view().name("contact"));
     	
-    	// TODO: Verify no feedback service interaction
+    	verifyZeroInteractions(emailService);
     }
     
     
