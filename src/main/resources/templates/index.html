@@ -1,38 +1,19 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	<meta name="description" content="Spring boot web application home page"/>
-	<meta name="author" content="kalodiodev"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta charset="UTF-8"/>
-	<title>Home Page</title>
-	
-	<!-- Bootstrap core CSS -->
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
-		th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
-	
-	<!-- Custom styles for this template -->
-	<link type="text/css" href="../static/css/styles.css" 
-		th:href="@{/css/styles.css}" rel="stylesheet" media="screen"/>
-		
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js" 
-		th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
-		th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
-</head>
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main">
+      
 
 <body>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="jumbotron text-center">
-					<h1 th:text="#{index.title}">Home Page Title</h1>
-					<p th:text="#{index.description}">Home Page Description</p>
-					<p><a class="btn btn-primary btn-lg" href="#" role="button" 
-						th:text="#{index.button.learnmore}">Learn more</a></p>
-				</div>
+
+	<div class="row" layout:fragment="content">
+		<div class="col-md-12">
+			<div class="jumbotron text-center">
+				<h1 th:text="#{index.title}">Home Page Title</h1>
+				<p th:text="#{index.description}">Home Page Description</p>
+				<p><a class="btn btn-primary btn-lg" href="#" role="button" 
+					th:text="#{index.button.learnmore}">Learn more</a></p>
 			</div>
 		</div>
 	</div>
