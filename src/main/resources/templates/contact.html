@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layout/main">
 
-<body>
+<body th:with="currentPage = contact">
 
 	<div class="row" layout:fragment="content">
 		<div class="col-md-6 col-md-offset-3">
