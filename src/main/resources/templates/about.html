@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main">
+
+<body th:with="currentPage = about">
+
+	<div class="row" layout:fragment="content">
+		<div class="col-md-12">
+			<div class="jumbotron text-center">
+				<h1 th:text="#{about.title}">Who we are ?</h1>
+				<p th:text="#{about.description}">About description</p>
+			</div>
+		</div>
+	</div>
+	
+</body>
+
+</html>
