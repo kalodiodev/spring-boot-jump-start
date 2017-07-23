@@ -3,21 +3,25 @@ package eu.kalodiodev.springjumpstart.domain;
 import java.time.ZonedDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * Abstract Domain Object
  * 
  * @author Athanasios Raptodimos
  */
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractDomain {
-	
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
