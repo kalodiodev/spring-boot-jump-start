@@ -15,15 +15,25 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableGlobalMethodSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	/* Permit all matchers */
+	private static final String[] PUBLIC_MATCHERS = {
+			"/", 
+			"/about",
+			"/contact",
+			"/login",
+			"/h2-console/**",
+	};
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
-				.antMatchers("/", "/about","/contact","/h2-console/**").permitAll()
+				.antMatchers(PUBLIC_MATCHERS).permitAll()
 				.anyRequest().authenticated()
 				.and()
 			.formLogin()
+				.loginPage("/login")
 				.permitAll().and()
 			.logout()
 				.permitAll();
@@ -37,6 +47,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
             .inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER");
+                .withUser("user@example.com").password("password").roles("USER");
     }
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" 
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
 <body>
 
@@ -24,6 +25,18 @@
                     </li>
                     <li th:classappend="${currentPage == 'contact'} ? 'active'">
                     	<a href="/contact" th:text="#{navbar.contact}">Contact</a>
+                    </li>
+                </ul>
+                
+                <ul class="nav navbar-nav navbar-right">
+                    <li sec:authorize="isAnonymous()" th:classappend="${currentPage == 'login'} ? 'active'">
+                    	<a th:href="@{/login}" href="/login" th:text="#{navbar.login}">Login</a>
+                    </li>
+                    <li sec:authorize="isAnonymous()" th:classappend="${currentPage == 'register'} ? 'active'">
+                    	<a th:href="@{/register}" href="/register" th:text="#{navbar.register}">Register</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()">
+                    	<a th:href="@{/logout}" href="/logout" th:text="#{navbar.logout}">Logout</a>
                     </li>
                 </ul>
             </div><!--/.nav-collapse -->
