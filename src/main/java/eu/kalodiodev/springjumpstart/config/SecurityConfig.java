@@ -20,15 +20,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableGlobalMethodSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
+
 	private UserDetailsService userDetailsService;
-	
+
 	/* Permit all matchers */
 	private static final String[] PUBLIC_MATCHERS = {
 			"/", 
 			"/about",
 			"/contact",
 			"/login",
+			"/register",
 			"/h2-console/**",
 	};
 	
@@ -36,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void setUserDetailsService(UserDetailsService userDetailsService) {
 		this.userDetailsService = userDetailsService;
-    }
+	}
 	
 	/**
 	 * Password Encoder

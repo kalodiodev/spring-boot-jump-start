@@ -1,6 +1,7 @@
 package eu.kalodiodev.springjumpstart.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -8,9 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import eu.kalodiodev.springjumpstart.command.UserForm;
 import eu.kalodiodev.springjumpstart.domain.User;
+import eu.kalodiodev.springjumpstart.exception.EmailExistsException;
 import eu.kalodiodev.springjumpstart.repository.UserRepository;
+import eu.kalodiodev.springjumpstart.service.RoleService;
 import eu.kalodiodev.springjumpstart.service.UserService;
 
 /**
@@ -26,6 +31,7 @@ public class UserServiceImpl implements UserService {
 	
 	private UserRepository userRepository;
 	private PasswordEncoder passwordEncoder;
+	private RoleService roleService;
 	
 	@Autowired
 	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
@@ -37,6 +43,11 @@ public class UserServiceImpl implements UserService {
 		this.userRepository = userRepository;
 	}
 	
+	@Autowired	
+	public void setRoleService(RoleService roleService) {
+		this.roleService = roleService;
+	}
+
 	@Override
 	public List<User> all() {
 		List<User> users = new ArrayList<>();
@@ -71,5 +82,32 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void delete(Long id) {
 		userRepository.delete(id);
+	}
+
+	@Transactional
+	@Override
+	public User register(UserForm userForm) throws EmailExistsException {
+		
+		if(emailExist(userForm.getEmail())) {
+			throw new EmailExistsException(
+					"There is already an account with this email address: " + userForm.getEmail());
+		}
+		
+		User user = new User();
+		user.setFirstName(userForm.getFirstName());
+		user.setLastName(userForm.getLastName());
+		user.setEmail(userForm.getEmail());
+		user.setPassword(userForm.getPassword());
+		user.setRoles(Arrays.asList(roleService.findByName("ROLE_USER")));
+		
+		return saveOrUpdate(user);
+	}
+	
+	//----------------> Private Methods
+	
+	private boolean emailExist(String email) {
+		User user = findByEmail(email);
+		
+		return user != null;
 	}
 }

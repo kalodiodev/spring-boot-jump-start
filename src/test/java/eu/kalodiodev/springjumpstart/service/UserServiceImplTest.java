@@ -1,7 +1,10 @@
 package eu.kalodiodev.springjumpstart.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -13,12 +16,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import eu.kalodiodev.springjumpstart.command.UserForm;
 import eu.kalodiodev.springjumpstart.domain.User;
+import eu.kalodiodev.springjumpstart.domain.security.Role;
+import eu.kalodiodev.springjumpstart.exception.EmailExistsException;
 import eu.kalodiodev.springjumpstart.repository.UserRepository;
 import eu.kalodiodev.springjumpstart.service.impl.UserServiceImpl;
 
@@ -35,6 +42,9 @@ public class UserServiceImplTest {
 
 	@Mock
 	private PasswordEncoder passwordEncoderMock;
+	
+	@Mock
+	private RoleService roleServiceMock;
 	
 	@InjectMocks
 	private UserService userService;
@@ -106,6 +116,41 @@ public class UserServiceImplTest {
 		verify(userRepositoryMock, times(1)).delete(id);
 	}
 	
+	@Test
+	public void shouldSaveRegisteringUser() throws EmailExistsException {		
+		ArgumentCaptor<User> userArg = ArgumentCaptor.forClass(User.class);
+		
+		User user = testUser();				
+		UserForm userForm = new UserForm();
+		userForm.setEmail(user.getEmail());
+		userForm.setFirstName(user.getFirstName());
+		userForm.setLastName(user.getLastName());
+		userForm.setPassword(user.getPassword());
+		
+		when(userRepositoryMock.findByEmail(anyString())).thenReturn(null);
+		when(userRepositoryMock.save(any(User.class))).thenReturn(user);
+		when(roleServiceMock.findByName(anyString())).thenReturn(new Role());
+		
+		User registered = userService.register(userForm);
+		
+		verify(userRepositoryMock).save(userArg.capture());
+		
+		assertNotNull("Registered user must not be null", registered);
+		assertThat(userArg.getValue().getEmail()).isEqualTo(userForm.getEmail());
+		assertThat(userArg.getValue().getFirstName()).isEqualTo(userForm.getFirstName());
+		assertThat(userArg.getValue().getLastName()).isEqualTo(userForm.getLastName());
+		assertThat(userArg.getValue().getPassword()).isEqualTo(userForm.getPassword());
+	}
+	
+	@Test(expected = EmailExistsException.class)
+	public void shouldThrowEmailExistsExceptionWhenRegistering() throws EmailExistsException {
+		UserForm userForm = new UserForm();
+		
+		when(userRepositoryMock.findByEmail(anyString())).thenReturn(new User());
+		
+		userService.register(userForm);
+	}
+	
 	
 	//--------------------> Private methods
 	
@@ -119,5 +164,4 @@ public class UserServiceImplTest {
 		
 		return user;
 	}
-
 }

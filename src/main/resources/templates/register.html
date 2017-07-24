@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main">
+
+<body th:with="currentPage = register">
+
+<div layout:fragment="content">
+
+    <div class="row">
+    	<div class="col-md-6 col-md-offset-3">
+        	<div class="well">
+        	
+        		<h2 th:text="#{register.form.title}">Register</h2>
+        		<hr/>
+        		
+        		<!--/* Registration Form */-->
+        		<form class="text-left" th:object="${userForm}" th:action="@{/register}" method="post">
+        		
+        			<!--/* Errors Message */-->
+        			<div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+        				<p th:text="#{form.hasErrors}">Error Message</p>
+        			</div>
+        			
+        			<!--/* First Name */-->
+        			<div class="form-group" th:classappend="${#fields.hasErrors('firstName')}? has-error">
+        				<label class="control-label" th:text="#{register.label.firstname}">First Name:</label>
+        				<input type="text" class="form-control" th:field="*{firstName}"/>
+        				<div th:if="${#fields.hasErrors('firstName')}" class="help-block">
+        					<ul>
+        						<li th:errors="*{firstName}"></li>
+        					</ul>
+        				</div>
+        			</div>
+        			
+        			<!--/* Last Name */-->
+        			<div class="form-group" th:classappend="${#fields.hasErrors('lastName')}? has-error">
+        				<label class="control-label" th:text="#{register.label.lastname}">Last Name:</label>
+        				<input type="text" class="form-control" th:field="*{lastName}"/>
+        				<div th:if="${#fields.hasErrors('lastName')}" class="help-block">
+        					<ul>
+        						<li th:errors="*{lastName}"></li>
+        					</ul>
+        				</div>
+        			</div>
+        			
+        			<!--/* Email */-->
+        			<div class="form-group" th:classappend="${#fields.hasErrors('email')}? has-error">
+        				<label class="control-label" th:text="#{register.label.email}">Email:</label>
+        				<input type="text" class="form-control" th:field="*{email}"/>
+        				<div th:if="${#fields.hasErrors('email')}" class="help-block">
+        					<ul>
+        						<li th:errors="*{email}"></li>
+        					</ul>
+        				</div>
+        			</div>
+        			
+        			<!--/* Password */-->
+        			<div class="form-group" th:classappend="${#fields.hasErrors('password')}? has-error">
+        				<label class="control-label" th:text="#{register.label.password}">Password:</label>
+        				<input type="password"  class="form-control" th:field="*{password}"/>
+        				<div th:if="${#fields.hasErrors('password')}" class="help-block">
+        					<ul>
+        						<li th:errors="*{password}"></li>
+        					</ul>
+        				</div>
+        			</div>
+        			
+        			<!--/* Password Confirmation */-->
+        			<div class="form-group" th:classappend="${#fields.hasErrors('matchingPassword')}? has-error">
+	        			<label class="control-label" th:text="#{register.label.password.confirm}">Password Confirm:</label>
+	        			<input type="password"  class="form-control" th:field="*{matchingPassword}"/>
+	        			<div th:if="${#fields.hasErrors('matchingPassword')}" class="help-block">
+        					<ul>
+        						<li th:errors="*{matchingPassword}"></li>
+        					</ul>
+        				</div>
+        			</div>
+        			
+        			<div class="form-group">
+        				<button type="submit" class="btn btn-primary" th:text="#{register.button.submit}">Register</button>
+        			</div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+</body>
+</html>
