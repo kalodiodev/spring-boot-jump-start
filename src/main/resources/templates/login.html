@@ -36,6 +36,11 @@
                         <label for="password" class="control-label" th:text="#{login.label.password}">Password:</label>
                         <input id="password" type="password"  class="form-control" name="password"/>
                     </div>
+                    
+                    <!--/* Forgot Password */-->
+                    <div class="form-group">
+                    	<a th:href="@{/reset}" href="/reset" th:text="#{login.link.forgotpassword}">Forgot my password</a>
+                    </div>
 
                     <button type="submit" class="btn btn-primary" th:text="#{login.button.submit}">Login</button>
                 </form>

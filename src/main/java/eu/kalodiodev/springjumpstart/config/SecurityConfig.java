@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import eu.kalodiodev.springjumpstart.controller.ForgotPasswordController;
+
 /**
  * Security Configuration
  * 
@@ -30,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/contact",
 			"/login",
 			"/register",
+			ForgotPasswordController.FORGOT_PASSWORD_URL,
 			"/h2-console/**",
 	};
 	
