@@ -3,7 +3,7 @@ package eu.kalodiodev.springjumpstart.command.validator;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import eu.kalodiodev.springjumpstart.command.UserForm;
+import eu.kalodiodev.springjumpstart.command.AbstractPasswordForm;
 
 /**
  * Password Matches Validator
@@ -12,7 +12,7 @@ import eu.kalodiodev.springjumpstart.command.UserForm;
  *
  * @author Athanasios Raptodimos
  */
-public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, UserForm> {
+public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, AbstractPasswordForm> {
 	
 	private String message;
 	private String firstField;
@@ -26,7 +26,7 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 	}
 	
 	@Override
-	public boolean isValid(UserForm userForm, ConstraintValidatorContext constraintValidatorContext) {
+	public boolean isValid(AbstractPasswordForm userForm, ConstraintValidatorContext constraintValidatorContext) {
 		boolean isValid = userForm.getPassword().equals(userForm.getMatchingPassword());
 		
 		if( !isValid ) {
