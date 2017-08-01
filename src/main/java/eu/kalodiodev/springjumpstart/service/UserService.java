@@ -27,4 +27,12 @@ public interface UserService extends CrudService<User> {
 	 * @throws EmailExistsException If account with this email already exists 
 	 */
 	User register(UserForm userForm) throws EmailExistsException;
+	
+	/**
+	 * Update user's password
+	 * 
+	 * @param userId Id of user
+	 * @param newPassword New password
+	 */
+	void updatePassword(Long userId, String newPassword);
 }

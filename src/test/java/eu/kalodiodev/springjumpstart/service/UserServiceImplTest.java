@@ -151,6 +151,19 @@ public class UserServiceImplTest {
 		userService.register(userForm);
 	}
 	
+	@Test
+	public void shouldUpdateUserEncryptedPassword() {
+		Long userId = 1L;
+		String password = "12345678";
+		String encPassword = "Encrypted Password";
+		
+		when(passwordEncoderMock.encode(password)).thenReturn(encPassword);
+		
+		userService.updatePassword(userId, password);
+
+		verify(userRepositoryMock).updateUserPassword(userId, encPassword);
+	}
+	
 	
 	//--------------------> Private methods
 	

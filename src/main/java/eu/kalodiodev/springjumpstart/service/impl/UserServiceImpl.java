@@ -103,6 +103,11 @@ public class UserServiceImpl implements UserService {
 		return saveOrUpdate(user);
 	}
 	
+	@Override
+	public void updatePassword(Long userId, String newPassword) {
+		userRepository.updateUserPassword(userId, passwordEncoder.encode(newPassword));
+	}
+	
 	//----------------> Private Methods
 	
 	private boolean emailExist(String email) {
