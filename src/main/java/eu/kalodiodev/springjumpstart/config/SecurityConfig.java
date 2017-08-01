@@ -28,11 +28,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	/* Permit all matchers */
 	private static final String[] PUBLIC_MATCHERS = {
 			"/", 
-			"/about",
-			"/contact",
+			"/about/**",
+			"/contact/**",
 			"/login",
 			"/register",
 			ForgotPasswordController.FORGOT_PASSWORD_URL,
+			ForgotPasswordController.CHANGE_PASSWORD_URL,
 			"/h2-console/**",
 	};
 	
