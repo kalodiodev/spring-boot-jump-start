@@ -10,7 +10,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +25,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import eu.kalodiodev.springjumpstart.command.UserForm;
+import eu.kalodiodev.springjumpstart.domain.PasswordResetToken;
 import eu.kalodiodev.springjumpstart.domain.User;
 import eu.kalodiodev.springjumpstart.domain.security.Role;
 import eu.kalodiodev.springjumpstart.exception.EmailExistsException;
@@ -45,6 +48,9 @@ public class UserServiceImplTest {
 	
 	@Mock
 	private RoleService roleServiceMock;
+	
+	@Mock
+	private PasswordResetTokenService prTokenServiceMock;
 	
 	@InjectMocks
 	private UserService userService;
@@ -162,6 +168,22 @@ public class UserServiceImplTest {
 		userService.updatePassword(userId, password);
 
 		verify(userRepositoryMock).updateUserPassword(userId, encPassword);
+	}
+	
+	@Test
+	public void shouldDeleteUserPasswordResetTokensAfterPasswordUpdate() {
+		Long userId = 1L;
+		
+		Set<PasswordResetToken> tokens = new HashSet<>();
+		tokens.add(new PasswordResetToken());
+		tokens.add(new PasswordResetToken());
+		
+		when(passwordEncoderMock.encode(anyString())).thenReturn("encrypted password");
+		when(prTokenServiceMock.findAllByUserId(userId)).thenReturn(tokens);
+		
+		userService.updatePassword(userId, "12345678");
+		
+		verify(prTokenServiceMock).delete(tokens);
 	}
 	
 	

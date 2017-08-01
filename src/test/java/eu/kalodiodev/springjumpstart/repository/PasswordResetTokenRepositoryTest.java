@@ -1,7 +1,10 @@
 package eu.kalodiodev.springjumpstart.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import java.util.Set;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,5 +39,18 @@ public class PasswordResetTokenRepositoryTest extends AbstractRepositoryTest {
 		// then
 		assertNotNull("Found password reset token must not be null", found);
 		assertThat(found.getUser().getEmail()).isEqualTo(prToken.getUser().getEmail());
+	}
+	
+	@Test
+	public void whenFindAllByUser_thenReturnTokens() {
+		// given
+		User user = persistTestUser();
+		persistTestPasswordResetToken(user);
+		
+		// when
+		Set<PasswordResetToken> tokens = passwordResetTokenRepository.findAllByUserId(user.getId());
+		
+		// then
+		assertEquals("Set of tokens must have a size of 1", 1, tokens.size());
 	}
 }

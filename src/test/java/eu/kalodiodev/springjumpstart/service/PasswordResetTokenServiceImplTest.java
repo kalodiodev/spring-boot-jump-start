@@ -1,5 +1,6 @@
 package eu.kalodiodev.springjumpstart.service;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
@@ -8,6 +9,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -84,5 +88,19 @@ public class PasswordResetTokenServiceImplTest {
 		verifyZeroInteractions(prtRepositoryMock);
 		
 		assertNull("Password reset token must be null", ptr);
+	}
+	
+	@Test
+	public void shouldReturnResetTokensOfUser() {
+		Long userId = 1L;
+		Set<PasswordResetToken> tokens = new HashSet<>();
+		tokens.add(new PasswordResetToken());
+		tokens.add(new PasswordResetToken());
+		
+		when(prtRepositoryMock.findAllByUserId(userId)).thenReturn(tokens);
+		
+		Set<PasswordResetToken> found = passwordResetTokenService.findAllByUserId(userId);
+		
+		assertEquals("Size of tokens set must be 2", 2, found.size());
 	}
 }

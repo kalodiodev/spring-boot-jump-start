@@ -1,5 +1,7 @@
 package eu.kalodiodev.springjumpstart.repository;
 
+import java.util.Set;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,4 +23,11 @@ public interface PasswordResetTokenRepository extends CrudRepository<PasswordRes
 	 */
 	PasswordResetToken findByToken(String token);
 
+	/**
+	 * Find all password reset tokens of user
+	 * 
+	 * @param userId User's id
+	 * @return Password reset tokens
+	 */
+	Set<PasswordResetToken> findAllByUserId(Long userId);
 }

@@ -1,5 +1,7 @@
 package eu.kalodiodev.springjumpstart.service;
 
+import java.util.Set;
+
 import eu.kalodiodev.springjumpstart.domain.PasswordResetToken;
 
 /**
@@ -24,5 +26,20 @@ public interface PasswordResetTokenService {
 	 * @return a new Password Reset Token for the user or null if user not found
 	 */
 	PasswordResetToken createPasswordResetToken(String email);
+	
+	/**
+	 * Find all {@link PasswordResetToken} of user
+	 * 
+	 * @param userId Id of user
+	 * @return Set of PasswordResetToken
+	 */
+	Set<PasswordResetToken> findAllByUserId(Long userId);
+	
+	/**
+	 * Delete tokens
+	 * 
+	 * @param tokens Iterable of tokens
+	 */
+	void delete(Iterable<PasswordResetToken> tokens);
 
 }

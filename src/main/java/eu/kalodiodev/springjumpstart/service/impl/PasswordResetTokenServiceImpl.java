@@ -1,6 +1,7 @@
 package eu.kalodiodev.springjumpstart.service.impl;
 
 import java.time.ZonedDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -66,5 +67,15 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
 		}
 		
 		return prToken;
+	}
+
+	@Override
+	public void delete(Iterable<PasswordResetToken> tokens) {
+		prtRepository.delete(tokens);
+	}
+
+	@Override
+	public Set<PasswordResetToken> findAllByUserId(Long userId) {
+		return prtRepository.findAllByUserId(userId);
 	}
 }

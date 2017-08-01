@@ -3,6 +3,7 @@ package eu.kalodiodev.springjumpstart.service.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,9 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import eu.kalodiodev.springjumpstart.command.UserForm;
+import eu.kalodiodev.springjumpstart.domain.PasswordResetToken;
 import eu.kalodiodev.springjumpstart.domain.User;
 import eu.kalodiodev.springjumpstart.exception.EmailExistsException;
 import eu.kalodiodev.springjumpstart.repository.UserRepository;
+import eu.kalodiodev.springjumpstart.service.PasswordResetTokenService;
 import eu.kalodiodev.springjumpstart.service.RoleService;
 import eu.kalodiodev.springjumpstart.service.UserService;
 
@@ -32,6 +35,7 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 	private PasswordEncoder passwordEncoder;
 	private RoleService roleService;
+	private PasswordResetTokenService passwordResetTokenService;
 	
 	@Autowired
 	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
@@ -46,6 +50,11 @@ public class UserServiceImpl implements UserService {
 	@Autowired	
 	public void setRoleService(RoleService roleService) {
 		this.roleService = roleService;
+	}
+	
+	@Autowired
+	public void setPasswordResetTokenService(PasswordResetTokenService passwordResetTokenService) {
+		this.passwordResetTokenService = passwordResetTokenService;
 	}
 
 	@Override
@@ -103,9 +112,16 @@ public class UserServiceImpl implements UserService {
 		return saveOrUpdate(user);
 	}
 	
+	@Transactional
 	@Override
-	public void updatePassword(Long userId, String newPassword) {
+	public void updatePassword(Long userId, String newPassword) {		
 		userRepository.updateUserPassword(userId, passwordEncoder.encode(newPassword));
+		
+		// Clear user tokens
+		Set<PasswordResetToken> tokens = passwordResetTokenService.findAllByUserId(userId);
+		if(! tokens.isEmpty()) {
+			passwordResetTokenService.delete(tokens);
+		}
 	}
 	
 	//----------------> Private Methods
