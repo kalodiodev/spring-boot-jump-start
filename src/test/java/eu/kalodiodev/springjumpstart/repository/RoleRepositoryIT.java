@@ -18,7 +18,7 @@ import eu.kalodiodev.springjumpstart.domain.security.Role;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class RoleRepositoryTest {
+public class RoleRepositoryIT {
 	
 	@Autowired
 	private TestEntityManager entityManager;

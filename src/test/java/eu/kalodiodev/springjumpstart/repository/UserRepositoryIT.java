@@ -12,7 +12,7 @@ import eu.kalodiodev.springjumpstart.domain.User;
  * 
  * @author Athanasios Raptodimos
  */
-public class UserRepositoryTest extends AbstractRepositoryTest {
+public class UserRepositoryIT extends AbstractRepositoryIT {
 		
 	@Autowired
 	private UserRepository userRepository;

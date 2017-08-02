@@ -22,7 +22,7 @@ import eu.kalodiodev.springjumpstart.domain.User;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class PasswordResetTokenRepositoryTest extends AbstractRepositoryTest {
+public class PasswordResetTokenRepositoryIT extends AbstractRepositoryIT {
 	
 	@Autowired
 	private PasswordResetTokenRepository passwordResetTokenRepository;

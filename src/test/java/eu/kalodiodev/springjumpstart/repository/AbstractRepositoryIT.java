@@ -19,7 +19,7 @@ import eu.kalodiodev.springjumpstart.domain.User;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public abstract class AbstractRepositoryTest {
+public abstract class AbstractRepositoryIT {
 	
 	@Autowired
 	protected TestEntityManager entityManager;
